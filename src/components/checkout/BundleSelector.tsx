@@ -92,7 +92,7 @@ function BundleCard({ bundle, selected, onSelect }: BundleCardProps) {
 
       <div className="mt-4 flex items-end gap-1.5 pl-9">
         {Array.from({ length: bundle.bottleCount }).map((_, i) => (
-          <Bottle key={`main-${i}`} small />
+          <Bottle key={`main-${i}`} w={20} h={42} />
         ))}
         {bundle.freeBonusBottles > 0 && (
           <>
@@ -100,7 +100,7 @@ function BundleCard({ bundle, selected, onSelect }: BundleCardProps) {
               + {bundle.freeBonusBottles} FREE
             </span>
             {Array.from({ length: bundle.freeBonusBottles }).map((_, i) => (
-              <Bottle key={`free-${i}`} small ghost />
+              <Bottle key={`free-${i}`} w={20} h={42} ghost />
             ))}
           </>
         )}

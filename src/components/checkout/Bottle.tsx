@@ -8,76 +8,47 @@
  * -----------------------------------------------------------------------------
  */
 
-import { useId } from "react";
-
 export interface BottleProps {
-  small?: boolean;
+  w?: number;
+  h?: number;
   ghost?: boolean;
 }
 
-export function Bottle({ small = false, ghost = false }: BottleProps) {
-  const w = small ? 22 : 70;
-  const h = small ? 56 : 168;
-  const id = useId().replace(/:/g, "");
-
+export function Bottle({ w = 200, h = 420, ghost = false }: BottleProps) {
   return (
-    <svg width={w} height={h} viewBox="0 0 70 168" aria-hidden="true">
-      <defs>
-        <linearGradient id={`glass-${id}`} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stopColor="#0e2a20" />
-          <stop offset="0.18" stopColor="#2d5e48" />
-          <stop offset="0.45" stopColor="#3a7a5e" />
-          <stop offset="0.7" stopColor="#1d3a2d" />
-          <stop offset="1" stopColor="#0a1f17" />
-        </linearGradient>
-        <linearGradient id={`cap-${id}`} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stopColor="#1a1a1a" />
-          <stop offset="0.3" stopColor="#4a4a4a" />
-          <stop offset="0.6" stopColor="#2a2a2a" />
-          <stop offset="1" stopColor="#0a0a0a" />
-        </linearGradient>
-        <linearGradient id={`label-${id}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#fbf8ee" />
-          <stop offset="1" stopColor="#ece6d4" />
-        </linearGradient>
-      </defs>
-      <g opacity={ghost ? 0.32 : 1}>
-        {!ghost && <ellipse cx="35" cy="162" rx="22" ry="3" fill="rgba(15,19,16,0.18)" />}
-        <rect x="18" y="6" width="34" height="12" rx="2" fill={`url(#cap-${id})`} />
-        <rect x="18" y="6" width="34" height="2" fill="rgba(255,255,255,0.35)" />
-        <rect x="22" y="18" width="26" height="6" fill={`url(#glass-${id})`} />
-        <path
-          d="M14 24 h42 v8 q0 4 -4 6 v110 q0 8 -8 8 h-18 q-8 0 -8 -8 v-110 q-4 -2 -4 -6 z"
-          fill={ghost ? "#e9e4d4" : `url(#glass-${id})`}
-          stroke="#0a1f17"
-          strokeWidth="0.6"
-        />
+    <svg width={w} height={h} viewBox="0 0 200 420" aria-hidden="true">
+      <g opacity={ghost ? 0.25 : 1}>
+        {/* shadow */}
+        <ellipse cx="100" cy="410" rx="68" ry="4" fill="#0d0d0c" opacity={ghost ? 0.05 : 0.08}/>
+        {/* cap */}
+        <rect x="60" y="20" width="80" height="34" fill="#0d0d0c"/>
+        <line x1="60" y1="44" x2="140" y2="44" stroke="#3a3a36" strokeWidth="1"/>
+        {/* neck */}
+        <rect x="72" y="54" width="56" height="14" fill="#1b3326"/>
+        {/* body — deep green apothecary glass */}
+        <path d="M48 68 h104 v20 q0 8 -10 14 v258 q0 18 -18 18 h-48 q-18 0 -18 -18 v-258 q-10 -6 -10 -14 z"
+              fill={ghost ? "transparent" : "#1b3326"}
+              stroke={ghost ? "#c9c4b1" : "#0d0d0c"} strokeWidth="0.8"/>
         {!ghost && (
-          <path
-            d="M19 38 q-1 4 -1 8 v90 q0 4 1 6"
-            fill="none"
-            stroke="rgba(255,255,255,0.55)"
-            strokeWidth="3"
-            strokeLinecap="round"
-          />
-        )}
-        {!ghost && (
-          <path d="M23 42 v100" stroke="rgba(255,255,255,0.25)" strokeWidth="1" strokeLinecap="round" />
-        )}
-        {!ghost && (
-          <path d="M51 38 v108" stroke="rgba(0,0,0,0.35)" strokeWidth="1.5" strokeLinecap="round" />
-        )}
-        {!ghost && (
-          <g>
-            <rect x="16" y="60" width="38" height="58" fill={`url(#label-${id})`} stroke="rgba(0,0,0,0.08)" strokeWidth="0.5" />
-            <rect x="16" y="60" width="38" height="3" fill="#1d3a2d" />
-            <rect x="16" y="115" width="38" height="3" fill="#1d3a2d" />
-            <text x="35" y="78" textAnchor="middle" fontFamily="Geist, sans-serif" fontWeight="700" fontSize="6" fill="#1d3a2d" letterSpacing="1.2">MERIDIAN</text>
-            <text x="35" y="90" textAnchor="middle" fontFamily="Geist, sans-serif" fontWeight="600" fontSize="4.5" fill="#6b6f64" letterSpacing="0.4">DAILY GREENS</text>
-            <text x="35" y="97" textAnchor="middle" fontFamily="Geist, sans-serif" fontWeight="600" fontSize="4.5" fill="#6b6f64" letterSpacing="0.4">COMPLEX</text>
-            <rect x="22" y="104" width="26" height="5" rx="0.5" fill="#e07b1f" />
-            <text x="35" y="108" textAnchor="middle" fontFamily="Geist, sans-serif" fontWeight="700" fontSize="3.5" fill="#ffffff" letterSpacing="0.5">32 INGREDIENTS</text>
-          </g>
+          <>
+            {/* glass highlights */}
+            <path d="M60 110 v240" stroke="#ffffff" strokeOpacity="0.2" strokeWidth="3" strokeLinecap="round"/>
+            <path d="M68 116 v228" stroke="#ffffff" strokeOpacity="0.08" strokeWidth="1.2"/>
+            {/* label — paper ivory */}
+            <rect x="56" y="160" width="88" height="160" fill="#f4f1e8"/>
+            <line x1="56" y1="160" x2="144" y2="160" stroke="#0d0d0c" strokeWidth="0.6"/>
+            <line x1="56" y1="320" x2="144" y2="320" stroke="#0d0d0c" strokeWidth="0.6"/>
+            {/* label content */}
+            <text x="100" y="186" textAnchor="middle" fontFamily="Cormorant Garamond" fontStyle="italic" fontWeight="400" fontSize="22" fill="#0d0d0c">Meridian</text>
+            <line x1="84" y1="196" x2="116" y2="196" stroke="#0d0d0c" strokeWidth="0.5"/>
+            <text x="100" y="222" textAnchor="middle" fontFamily="Geist" fontWeight="500" fontSize="9" fill="#0d0d0c" letterSpacing="2">DAILY GREENS</text>
+            <text x="100" y="235" textAnchor="middle" fontFamily="Geist" fontWeight="500" fontSize="9" fill="#0d0d0c" letterSpacing="2">COMPLEX</text>
+            <text x="100" y="262" textAnchor="middle" fontFamily="Geist" fontWeight="400" fontSize="7" fill="#787870" letterSpacing="1.4">32 ORGANIC PLANTS</text>
+            <text x="100" y="274" textAnchor="middle" fontFamily="Geist" fontWeight="400" fontSize="7" fill="#787870" letterSpacing="1.4">·  ADAPTOGENS  ·</text>
+            <text x="100" y="286" textAnchor="middle" fontFamily="Geist" fontWeight="400" fontSize="7" fill="#787870" letterSpacing="1.4">DIGESTIVE ENZYMES</text>
+            <text x="100" y="310" textAnchor="middle" fontFamily="Geist Mono" fontWeight="500" fontSize="7" fill="#0d0d0c" letterSpacing="1.5">NET WT. 240G</text>
+            <rect x="92" y="295" width="16" height="6" fill="#8c4a1c"/>
+          </>
         )}
       </g>
     </svg>

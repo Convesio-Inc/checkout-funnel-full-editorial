@@ -11,37 +11,28 @@
 import { Icon } from "@/components/icons";
 import { Bottle } from "@/components/checkout/Bottle";
 
-const TRUST_BADGES = ["NSF Certified", "Non-GMO", "Vegan", "Made in Oregon"];
-
 export function ProductHeroCard() {
   return (
-    <div data-section="product-hero" className="gloss-card rounded-md overflow-hidden">
-      <div className="grid grid-cols-[170px_1fr]">
-        <div className="relative flex items-center justify-center py-5 stripes border-r border-line">
-          <div style={{ filter: "drop-shadow(0 12px 14px rgba(15,40,30,0.2))" }}>
-            <Bottle />
-          </div>
-        </div>
-        <div className="p-5">
-          <div className="text-[10.5px] uppercase tracking-[0.22em] text-ink3">
-            Step 1 of 1 · Build your order
-          </div>
-          <h1 className="serif text-[40px] leading-[0.95] mt-2 tracking-tight text-ink">
-            Daily Greens <em className="text-forest">Complex</em>
-          </h1>
-          <p className="text-[13.5px] text-ink2 mt-3 leading-relaxed max-w-[44ch]">
-            32 organic plants, adaptogens, and digestive enzymes. One scoop replaces the
-            morning supplement stack.
-          </p>
-          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11.5px] text-ink3">
-            {TRUST_BADGES.map((badge) => (
-              <span key={badge} className="inline-flex items-center gap-1.5">
-                <Icon.Check className="w-3.5 h-3.5 text-forest" /> {badge}
-              </span>
-            ))}
-          </div>
+    <section data-section="product-hero" className="grid grid-cols-[minmax(280px,420px)_1fr] gap-12 items-end py-12">
+      <div className="wash flex items-end justify-center pt-8 pb-2 border border-line">
+        <Bottle w={240} h={460}/>
+      </div>
+      <div className="pb-4">
+        <div className="smallcaps text-[10.5px] text-ink3">N° 01 — Daily ritual</div>
+        <h1 className="serif text-[80px] leading-[0.92] tracking-[-0.01em] mt-3 text-ink">
+          Daily Greens<br/>
+          <span className="italic">Complex.</span>
+        </h1>
+        <p className="text-[14px] text-ink2 mt-5 leading-[1.65] max-w-[46ch] font-light">
+          Thirty-two organic plants, adaptogens, and digestive enzymes — formulated in Portland, third-party tested, and made to replace the morning supplement stack in a single, unhurried scoop.
+        </p>
+        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-[11.5px] text-ink3 font-light">
+          <span className="inline-flex items-center gap-1.5"><Icon.Dot className="w-1.5 h-1.5 text-umber"/> NSF Certified</span>
+          <span className="inline-flex items-center gap-1.5"><Icon.Dot className="w-1.5 h-1.5 text-umber"/> Non-GMO Project</span>
+          <span className="inline-flex items-center gap-1.5"><Icon.Dot className="w-1.5 h-1.5 text-umber"/> Vegan · Gluten free</span>
+          <span className="inline-flex items-center gap-1.5"><Icon.Dot className="w-1.5 h-1.5 text-umber"/> Plant-based capsules</span>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
