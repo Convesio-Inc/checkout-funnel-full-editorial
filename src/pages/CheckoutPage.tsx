@@ -95,84 +95,71 @@ export function CheckoutPage() {
   const isProcessing = status === "processing";
 
   return (
-    <main data-page="checkout">
-      <div className="max-w-[1180px] mx-auto px-5 py-8">
-        <div className="grid lg:grid-cols-[1.05fr_1fr] gap-8 items-start">
+    <main data-page="checkout" className="max-w-[1200px] mx-auto px-8">
+      <ProductHeroCard />
 
-          {/* LEFT: social-proof column */}
-          <section data-region="form-stack" className="space-y-5">
-            <ProductHeroCard />
-            <BundleSelector value={selectedBundle} onChange={setSelectedBundle} />
-            <GuaranteeCard />
-            <ReviewsSection />
-            <IngredientsPanel />
-          </section>
-
-          {/* RIGHT: sticky form column */}
-          <aside data-region="summary" className="lg:sticky lg:top-[88px]">
-            <div className="rounded-lg">
-              {/* Security header */}
-              <div className="flex items-center justify-between gap-3 gloss-forest text-bone px-4 py-3 rounded-md">
-                <div className="flex items-center gap-2.5">
-                  <Icon.Shield className="w-5 h-5" />
-                  <div className="leading-tight">
-                    <div className="text-[12.5px] font-semibold tracking-[0.06em] uppercase">
-                      Safe &amp; Secure Order Form
-                    </div>
-                    <div className="text-[10.5px] uppercase tracking-[0.18em] text-bone/70">
-                      256-bit secure encryption
-                    </div>
-                  </div>
-                </div>
-                <div className="num text-[11px] text-bone/80 hidden sm:flex items-center gap-1 gloss-pill px-2 py-1 rounded-[3px]">
-                  <Icon.Lock className="w-3.5 h-3.5" /> https
-                </div>
-              </div>
-
-              {/* Form */}
-              <form onSubmit={handleSubmit} className="gloss-card rounded-md p-5 mt-3 space-y-6">
-                <section data-section="customer-info">
-                  <SectionHead n="1" title="Contact" sub="So we can send your tracking link." />
-                  <CustomerInfo value={customer} onChange={setCustomer} />
-                </section>
-
-                <section data-section="shipping-info">
-                  <SectionHead n="2" title="Shipping address" sub="U.S. only — free 2–4 day delivery." />
-                  <ShippingInfo value={shipping} onChange={setShipping} />
-                </section>
-
-                <section data-section="payment-info">
-                  <SectionHead n="3" title="Payment" sub="We never store your card." />
-                  <PaymentInfo
-                    customerEmail={customer.email || undefined}
-                    onValidityChange={setIsPaymentValid}
-                    onComponentReady={handleComponentReady}
-                  />
-                </section>
-
-                <OrderSummaryCard
-                  selectedBundle={selectedBundle}
-                  payDisabled={!isPaymentValid}
-                  payLoading={isProcessing}
-                />
-              </form>
+      <div className="grid lg:grid-cols-[1fr_minmax(420px,1fr)] gap-16 items-start border-t border-rule pt-12">
+        {/* LEFT */}
+        <section data-region="form-stack">
+          <div className="flex items-baseline justify-between">
+            <div>
+              <div className="smallcaps text-[10.5px] text-ink3">Step one</div>
+              <h2 className="serif text-[34px] leading-none mt-1">Choose your supply.</h2>
             </div>
+            <span className="text-[11.5px] text-ink3 font-light">
+              Most order the <span className="text-ink2">Trio</span>.
+            </span>
+          </div>
+          <div className="mt-7">
+            <BundleSelector value={selectedBundle} onChange={setSelectedBundle} />
+          </div>
+          <GuaranteeCard />
+          <ReviewsSection />
+          <IngredientsPanel />
+        </section>
 
-            <p className="text-[11px] text-ink3 text-center mt-3 max-w-[44ch] mx-auto leading-relaxed">
-              By placing this order you agree to our terms &amp; auto-renewal policy. Demo checkout —
-              no real charges are made.
+        {/* RIGHT */}
+        <aside data-region="summary" className="lg:sticky lg:top-[56px] lg:pl-8 lg:border-l lg:border-rule">
+          <div className="smallcaps text-[10.5px] text-ink3 mb-2">Step two</div>
+          <div className="flex items-baseline justify-between border-b border-rule pb-4">
+            <h2 className="serif text-[26px] leading-none">Your details.</h2>
+            <span className="smallcaps text-[10.5px] text-ink3 flex items-center gap-1.5">
+              <Icon.Lock className="w-3 h-3" aria-hidden="true" /> 256-bit secured
+            </span>
+          </div>
+
+          <form onSubmit={handleSubmit} className="pt-7 space-y-9">
+            <section data-section="customer-info">
+              <SectionHead n="I" title="Contact" />
+              <CustomerInfo value={customer} onChange={setCustomer} />
+            </section>
+            <section data-section="shipping-info">
+              <SectionHead n="II" title="Shipping address" />
+              <ShippingInfo value={shipping} onChange={setShipping} />
+            </section>
+            <section data-section="payment-info">
+              <SectionHead n="III" title="Payment" sub="VISA · MC · AMEX · DISC" />
+              <PaymentInfo
+                customerEmail={customer.email || undefined}
+                onValidityChange={setIsPaymentValid}
+                onComponentReady={handleComponentReady}
+              />
+            </section>
+
+            <OrderSummaryCard
+              selectedBundle={selectedBundle}
+              payDisabled={!isPaymentValid}
+              payLoading={isProcessing}
+            />
+
+            <p className="text-center text-[11px] text-ink3 -mt-3 font-light">
+              You will not be charged until you press the button above. Demo checkout — no real charges.
             </p>
-          </aside>
-
-        </div>
+          </form>
+        </aside>
       </div>
 
-      <PaymentStatusDialog
-        status={status}
-        error={error}
-        result={result}
-        onClose={reset}
-      />
+      <PaymentStatusDialog status={status} error={error} result={result} onClose={reset} />
     </main>
   );
 }
