@@ -1,6 +1,7 @@
-# Convesio Fulfillment Checkout V2
+# Convesio Fulfillment Checkout V3
 
-A production-ready **single-page application** that renders an **integrated ConvesioPay checkout**, ready to deploy on [Convesio Static Sites](https://convesio.com).
+A production-ready **single-page application** that renders an **integrated ConvesioPay checkout** in an editorial, print-inspired visual style, ready to deploy on [Convesio Static Sites](https://convesio.com).
+Ships as a fully designed **"MERIDIAN — Daily Greens Complex"** supplement checkout demo and serves as the v3 reference implementation.
 It features native integrations with FullStack CartRover API + SendGrid API, so every 2 hours orders are synced with CartRover, and the customers are emailed through SendGrid.
 
 Built with **React 19**, **TypeScript**, **Vite**, **Tailwind CSS v4** and **shadcn/ui**, served from a **Cloudflare Worker** that proxies payment calls server-side so your API keys never leave the server.
@@ -9,7 +10,7 @@ Built with **React 19**, **TypeScript**, **Vite**, **Tailwind CSS v4** and **sha
 
 ## Table of Contents
 
-- [Convesio Fulfillment Checkout V2](#convesio-fulfillment-checkout-v2)
+- [Convesio Fulfillment Checkout V3](#convesio-fulfillment-checkout-v3)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [How it Works](#how-it-works)
@@ -120,8 +121,8 @@ Before you start, make sure you have:
 Fork or clone this repository into your own GitHub account:
 
 ```bash
-git clone https://github.com/Convesio-Inc/fulfillment-checkout-v2.git
-cd fulfillment-checkout-v2
+git clone https://github.com/Convesio-Inc/fulfillment-checkout-v3.git
+cd fulfillment-checkout-v3
 npm install
 ```
 
@@ -130,7 +131,7 @@ npm install
 The Worker persists orders and payments in a Cloudflare D1 database. Create one and apply the migrations:
 
 ```bash
-wrangler d1 create fulfillment-checkout-v2
+wrangler d1 create fulfillment-checkout-v3
 ```
 
 Copy the `database_id` printed by the command and update `wrangler.jsonc`:
@@ -139,7 +140,7 @@ Copy the `database_id` printed by the command and update `wrangler.jsonc`:
 "d1_databases": [
   {
     "binding": "DB",
-    "database_name": "fulfillment-checkout-v2",
+    "database_name": "fulfillment-checkout-v3",
     "database_id": "<your-database-id>"
   }
 ]
@@ -148,7 +149,7 @@ Copy the `database_id` printed by the command and update `wrangler.jsonc`:
 Then apply migrations:
 
 ```bash
-wrangler d1 migrations apply fulfillment-checkout-v2
+wrangler d1 migrations apply fulfillment-checkout-v3
 ```
 
 ### 3. Deploy to Convesio Static Sites
@@ -240,7 +241,7 @@ All credentials are required. They are injected at runtime into the Cloudflare W
 | `CARTROVER_API_USER` | secret | CartRover API username. Used with `CARTROVER_API_KEY` for Basic auth. |
 | `CARTROVER_API_KEY`  | secret | CartRover API key. Combined with `CARTROVER_API_USER` for order sync. |
 
-> All secrets are declared in `wrangler.jsonc` under `secrets.required` — Wrangler will refuse to deploy if any are missing. For local development, set them in a `.dev.vars` file at the project root (see [Local Development](#local-development)).
+> Secrets are listed in `wrangler.jsonc` under `secrets.required`. The default configuration ships with `"required": []` (empty) to allow a bootstrap deploy before secrets exist — restore the full list once all secrets are set on the Worker. For local development, set them in a `.dev.vars` file at the project root (see [Local Development](#local-development)).
 
 ---
 
@@ -273,12 +274,18 @@ Each component starts with a JSDoc header that describes what it renders and lis
 |---|---|
 | Top navigation bar (brand name, nav links) | `src/components/site/SiteHeader.tsx` |
 | Footer copy | `src/components/site/SiteFooter.tsx` |
+| Hero product image + bottle illustration | `src/components/checkout/ProductHeroCard.tsx` |
 | Checkout section headings, payment amount, product SKU/name | `src/pages/CheckoutPage.tsx` |
-| Countdown timer (start time, lead text) | `src/components/checkout/CheckoutTimer.tsx` |
+| Bundle options (bottle counts, prices, savings) | `src/components/checkout/bundles.ts` |
+| Bundle selector + subscription toggle | `src/components/checkout/BundleSelector.tsx` |
+| 30-day guarantee card | `src/components/checkout/GuaranteeCard.tsx` |
+| Customer testimonials | `src/components/checkout/ReviewsSection.tsx` |
+| Ingredient groups | `src/components/checkout/IngredientsPanel.tsx` |
 | Customer form labels and placeholders | `src/components/checkout/CustomerInfo.tsx` |
 | Shipping form labels, placeholders, and country list | `src/components/checkout/ShippingInfo.tsx` |
 | Payment form loading/error messages | `src/components/checkout/PaymentInfo.tsx` |
 | Order summary sidebar (product, prices, CTA label, footnote) | `src/components/checkout/OrderSummaryCard.tsx` |
+| Trust/security badges | `src/components/checkout/SecurityBadges.tsx` |
 | Product page content | `src/pages/ProductPage.tsx` |
 | Thank-you page content, upsell offer | `src/pages/ThankYouPage.tsx` |
 
@@ -286,47 +293,60 @@ Replace placeholder images in `public/` and update the `src` paths in the releva
 
 > **⚠ Keep payment amount in sync:** `AMOUNT_MINOR` in `src/pages/CheckoutPage.tsx` is the charge sent to ConvesioPay (in cents). It must match the displayed "Total" in `src/components/checkout/OrderSummaryCard.tsx`. Both files have a warning comment as a reminder.
 
-### 2. Brand colors — `src/index.css`
+### 2. Editorial design tokens — `src/index.css`
 
-All visual tokens live in the `/* === BRAND THEME === */` block near the top of `src/index.css`. The most common ones to change:
+v3 uses a flat, print-inspired editorial system. All tokens live in the `/* === EDITORIAL TOKENS === */` block in `src/index.css`. The palette:
 
 ```css
-/* Core brand */
---brand                  /* primary accent color (badges, icons, highlights) */
---brand-foreground       /* text on --brand backgrounds */
---brand-accent           /* secondary accent */
+/* Surfaces */
+--color-ivory: #f4f1e8;   /* page background */
+--color-bone:  #f4f1e8;   /* alias */
+--color-line:  #dcd8c8;   /* hairline borders */
 
-/* Pay Now button */
---pay-cta-from           /* gradient start */
---pay-cta-to             /* gradient end */
---pay-cta-hover-from     /* hover gradient start */
---pay-cta-hover-to       /* hover gradient end */
---pay-cta-foreground     /* button text color */
+/* Ink scale */
+--color-ink:   #0d0d0c;   /* primary text */
+--color-ink2:  #2a2826;   /* secondary text */
+--color-ink3:  #6b6760;   /* captions, hints */
+--color-ink4:  #b0ab9f;   /* placeholder, decorative dashes */
 
-/* Typography & shape */
---font-sans              /* body font family */
---font-heading           /* heading font family */
---radius                 /* base border radius (scales --radius-sm … --radius-2xl) */
+/* Accents */
+--color-umber:  #8c4a1c;  /* savings, timers, charge-pending badges */
+--color-forest: #1b3326;  /* success states */
 ```
 
-All color values use `oklch()` for perceptual consistency. Swap in any color space you prefer.
+CSS utility classes (applied with plain class names, no `tw-` prefix):
+
+| Class | Purpose |
+|---|---|
+| `.serif` | Cormorant Garamond serif |
+| `.smallcaps` | Geist sans, all-caps, letter-spaced |
+| `.num` | Tabular numerals (lining figures) |
+| `.cta` | Flat ink pay button (fill + hover) |
+| `.wash` | `background-color: var(--color-ivory)` |
+| `.dot` / `.dot.on` | Radio-style circle indicator |
+| `.hr` / `.vr` | Hairline horizontal / vertical rule |
+
+**No gradients, no shadows, no rounded cards.** Section boundaries use `border border-line`. Reach for `border-t border-line` as a section divider.
 
 ### 3. Layout and behavior — section components
 
 Each section of every page lives in its own component. Compose or reorder them in the matching page file.
 
-**Checkout** (`src/pages/CheckoutPage.tsx`):
+**Checkout** (`src/pages/CheckoutPage.tsx`) — two-column editorial layout:
 
 | Component             | File                                              |
 | --------------------- | ------------------------------------------------- |
-| `CheckoutHeader`      | `src/components/checkout/CheckoutHeader.tsx`      |
-| `CheckoutTimer`       | `src/components/checkout/CheckoutTimer.tsx`       |
+| `ProductHeroCard`     | `src/components/checkout/ProductHeroCard.tsx`     |
+| `BundleSelector`      | `src/components/checkout/BundleSelector.tsx`      |
+| `GuaranteeCard`       | `src/components/checkout/GuaranteeCard.tsx`       |
+| `ReviewsSection`      | `src/components/checkout/ReviewsSection.tsx`      |
+| `IngredientsPanel`    | `src/components/checkout/IngredientsPanel.tsx`    |
 | `CustomerInfo`        | `src/components/checkout/CustomerInfo.tsx`        |
 | `ShippingInfo`        | `src/components/checkout/ShippingInfo.tsx`        |
 | `PaymentInfo`         | `src/components/checkout/PaymentInfo.tsx`         |
 | `OrderSummaryCard`    | `src/components/checkout/OrderSummaryCard.tsx`    |
+| `SecurityBadges`      | `src/components/checkout/SecurityBadges.tsx`      |
 | `PaymentStatusDialog` | `src/components/checkout/PaymentStatusDialog.tsx` |
-| `UpsellOfferBanner`   | `src/components/checkout/UpsellOfferBanner.tsx`   |
 
 **Product page** (`src/pages/ProductPage.tsx`):
 
@@ -342,8 +362,10 @@ Each section of every page lives in its own component. Compose or reorder them i
 | `ThankYouHeader`        | `src/components/thank-you/ThankYouHeader.tsx`        |
 | `OrderConfirmationCard` | `src/components/thank-you/OrderConfirmationCard.tsx` |
 | `NextStepsCard`         | `src/components/thank-you/NextStepsCard.tsx`         |
+| `UpsellOfferBanner`     | `src/components/thank-you/UpsellOfferBanner.tsx`     |
+| `UpsellCheckoutModal`   | `src/components/thank-you/UpsellCheckoutModal.tsx`   |
 
-Each component starts with a JSDoc header listing its props and the `config.ts` key that feeds it. Components also expose `data-section`, `data-slot`, and `data-field` attributes on their root elements so you can target them with CSS selectors without relying on class names.
+Each component starts with a JSDoc header listing its `data-*` markers. Components expose `data-section`, `data-slot`, and `data-field` attributes on their root elements so you can target them with CSS selectors without relying on class names.
 
 ---
 
@@ -360,7 +382,7 @@ npm install
 The dev server runs a local D1 instance automatically, but you need to apply migrations before the first run:
 
 ```bash
-wrangler d1 migrations apply fulfillment-checkout-v2 --local
+wrangler d1 migrations apply fulfillment-checkout-v3 --local
 ```
 
 ### 3. Configure local secrets
@@ -427,7 +449,16 @@ npm run preview    # Builds then serves the production bundle
 ├── src/
 │   ├── components/
 │   │   ├── checkout/            ★ Checkout-page section components
-│   │   │   └── primitives/        SectionCard, PriceRow, SecureBadge, GuaranteeBadge
+│   │   │   ├── BundleSelector.tsx   Bundle picker + visual subscription toggle
+│   │   │   ├── bundles.ts           Bundle definitions (bottle counts, prices)
+│   │   │   ├── GuaranteeCard.tsx    30-day guarantee block + Seal stamp
+│   │   │   ├── IngredientsPanel.tsx 4-column ingredient groups
+│   │   │   ├── ProductHeroCard.tsx  Hero product image + bottle illustration
+│   │   │   ├── ReviewsSection.tsx   Editorial testimonials
+│   │   │   ├── Seal.tsx             Circular guarantee SVG stamp
+│   │   │   ├── SecurityBadges.tsx   4-column trust text grid
+│   │   │   ├── form-atoms.tsx       SectionHead, Field primitives
+│   │   │   └── primitives/          SectionCard, PriceRow
 │   │   ├── product/               Product-page components
 │   │   ├── thank-you/             Thank-you-page components
 │   │   ├── auth/                  Login / auth UI components
@@ -452,7 +483,7 @@ npm run preview    # Builds then serves the production bundle
 │   ├── providers/                 Context providers (Auth, Orders, Users, OrderDrawer)
 │   ├── query-options/             TanStack Query query option factories
 │   ├── utils/                     Standalone utility functions
-│   ├── index.css                ★ Brand theme tokens
+│   ├── index.css                ★ Editorial design tokens (ivory, ink scale, umber, forest)
 │   ├── App.tsx                    Router setup
 │   └── main.tsx                   App entry
 ├── worker/
@@ -533,7 +564,7 @@ Live integrations require their own distinct credentials — sandbox keys won't 
 The redirect URI in your Google Cloud OAuth client must exactly match `https://<your-site-url>/auth/google/callback`. A trailing slash or wrong domain will cause this error.
 
 **Worker fails to start locally (`missing binding: DB`).**
-Run `wrangler d1 migrations apply fulfillment-checkout-v2 --local` to create and seed the local D1 database before starting the dev server.
+Run `wrangler d1 migrations apply fulfillment-checkout-v3 --local` to create and seed the local D1 database before starting the dev server.
 
 **Orders aren't syncing to CartRover.**
 Check that `CARTROVER_API_USER` and `CARTROVER_API_KEY` are set correctly. The sync runs on a 2-hour cron — you can trigger it manually via `wrangler dev` and the scheduled event.

@@ -1,6 +1,8 @@
-# Fulfillment Checkout
+# Fulfillment Checkout V3 (MERIDIAN)
 
 A storefront SPA + admin dashboard served by a single Cloudflare Worker. The worker proxies ConvesioPay, owns a D1 database, and runs a bi-hourly fulfillment cron that charges deferred upsells, pushes orders to CartRover, and sends confirmation emails via SendGrid.
+
+This is the **v3 reference implementation** — a fully designed "MERIDIAN — Daily Greens Complex" editorial supplement checkout. It ships with an editorial visual system (flat ivory background, hairline borders, Cormorant Garamond serif, no gradients or shadows) and a complete Meridian-branded component set. The worker name is `fulfillment-checkout-v3`; the D1 database is `fulfillment-checkout-v3` (id `a4ea6c23-a6a6-4911-b03b-8054fccd5f39`); the GitHub remote is `git@github.com:Convesio-Inc/fulfillment-checkout-v3.git`.
 
 This repo started from the public [SPA Checkout Template](https://github.com/Convesio-Inc/spa-checkout-template).
 
@@ -26,7 +28,7 @@ React 19 + TypeScript SPA (Vite) deployed as a **Cloudflare Worker** (`@cloudfla
 
 - **Routing**: React Router 7 in `src/App.tsx`, wrapped in `AuthProvider` and `QueryClientProvider` (TanStack Query). Storefront routes live under `ShopLayout`; dashboard routes live under `DashboardLayout` and are gated by `ProtectedRoute`.
 - **Data layer**: TanStack Query for dashboard data fetching/caching. Storefront state is local-only.
-- **Persistence**: Cloudflare D1 (`DB` binding, db name `fulfillment-checkout-v2`). Queries go through Drizzle ORM (`worker/db/`).
+- **Persistence**: Cloudflare D1 (`DB` binding, db name `fulfillment-checkout-v3`). Queries go through Drizzle ORM (`worker/db/`).
 - **Scheduled work**: A `0 */2 * * *` cron triggers `handleSyncPayments`, which reconciles pending payments, charges deferred upsells, syncs orders to CartRover, and emails customers.
 
 ### Frontend routes
@@ -86,7 +88,7 @@ Sessions are **opaque hex tokens** (not JWTs) stored in the `user_sessions` D1 t
 
 | File                                                                                                                                                                   | Role                                                                                                                                                                                                                                                                                                      |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/index.css`                                                                                                                                                        | `/* === BRAND THEME === */` block — three `--brand*` tokens drive button color, hover, and text.                                                                                                                                                                                                          |
+| `src/index.css`                                                                                                                                                        | `/* === EDITORIAL TOKENS === */` block — ivory/bone background, ink scale, umber accent, forest success, hairline `--color-line`. CSS helpers: `.serif`, `.smallcaps`, `.num`, `.cta`, `.wash`, `.dot`/`.dot.on`, `.hr`/`.vr`.                                                                            |
 | `src/App.tsx`                                                                                                                                                          | Wraps the app in `AuthProvider` + `QueryClientProvider`, mounts `ShopLayout` (storefront) and `DashboardLayout` (admin) with `ProtectedRoute` on dashboard routes.                                                                                                                                        |
 | `src/layouts/ShopLayout.tsx` / `src/layouts/DashboardLayout.tsx`                                                                                                       | Two top-level layouts — storefront vs admin.                                                                                                                                                                                                                                                              |
 | `src/pages/CheckoutPage.tsx`                                                                                                                                           | Owns all checkout form state; wires `useConvesioPayCheckout` + `useCheckoutPayment`; drives `PaymentStatusDialog`.                                                                                                                                                                                        |
@@ -152,7 +154,7 @@ The `assets.run_worker_first` array in `wrangler.jsonc` lists the paths the work
 
 ### Worker secrets
 
-Declared in `wrangler.jsonc` as `secrets.required` (Wrangler fails the deploy if any are missing) and typed in `worker/env.d.ts`:
+Typed in `worker/env.d.ts` and listed (but currently not enforced) in `wrangler.jsonc` under `secrets.required`:
 
 - ConvesioPay: `CPAY_CLIENT_KEY`, `CPAY_API_KEY`, `CPAY_SECRET`, `CPAY_INTEGRATION`.
 - Auth: `AUTH_SALT` — keys session-token derivation; rotating it logs everyone out.
@@ -160,11 +162,13 @@ Declared in `wrangler.jsonc` as `secrets.required` (Wrangler fails the deploy if
 - Email: `SENDGRID_API_KEY` — used by the cron to send order confirmations.
 - Fulfillment: `CARTROVER_API_USER`, `CARTROVER_API_KEY` — used by the cron to create orders in CartRover.
 
+> **Bootstrap note:** `wrangler.jsonc` ships with `"required": []` (empty). A brand-new Worker has no version yet, so `wrangler secret put` can't run until after an initial deploy — but a non-empty `required` list blocks that deploy. Once all secrets are set on the deployed Worker, restore the full list.
+
 Plain var: `CPAY_ENVIRONMENT` — `"test"` (default) or `"live"`. Selects the upstream host (`api.convesiopay.com` vs `api-qa.convesiopay.com`) — sandbox keys against live (or vice-versa) return a 401.
 
 ### D1 database
 
-Binding `DB`, database name `fulfillment-checkout-v2` (id pinned in `wrangler.jsonc`). All queries go through Drizzle (`db(env)` in `worker/db/client.ts`). Schema in `worker/db/schema.ts`:
+Binding `DB`, database name `fulfillment-checkout-v3` (id `a4ea6c23-a6a6-4911-b03b-8054fccd5f39`, pinned in `wrangler.jsonc`). All queries go through Drizzle (`db(env)` in `worker/db/client.ts`). Schema in `worker/db/schema.ts`:
 
 | Table           | Notes                                                                                                                                                                                                                             |
 | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -182,19 +186,23 @@ Three layers in increasing depth — only go deeper than you need:
 1. **Copy / prices / images** → edit the component or page directly. Every user-visible string, price and image lives inline in the file that renders it. Key locations:
    - Brand name, nav links → `src/components/site/SiteHeader.tsx`
    - Footer copy → `src/components/site/SiteFooter.tsx`
+   - Hero product image + Bottle SVG → `src/components/checkout/ProductHeroCard.tsx`
+   - Bundle options (bottle counts, prices, savings) → `src/components/checkout/bundles.ts`
    - Checkout section headings, payment amount (`AMOUNT_MINOR`), product SKU/name → `src/pages/CheckoutPage.tsx`
-   - Countdown timer start values → `src/components/checkout/CheckoutTimer.tsx`
+   - Customer testimonials → `src/components/checkout/ReviewsSection.tsx`
+   - Ingredient groups → `src/components/checkout/IngredientsPanel.tsx`
    - Customer / shipping / payment form labels → the matching component in `src/components/checkout/`
    - Country list in shipping form → `COUNTRIES` constant in `src/components/checkout/ShippingInfo.tsx`
    - Order summary product, prices, CTA → `src/components/checkout/OrderSummaryCard.tsx`
+   - Trust badges → `src/components/checkout/SecurityBadges.tsx`
    - Product page content → `src/pages/ProductPage.tsx`
    - Thank-you page copy, upsell offer → `src/pages/ThankYouPage.tsx` (`UPSELL_PRODUCT = null` disables the banner)
-2. **Brand colors** → `/* === BRAND THEME === */` block in `src/index.css`.
+2. **Editorial design tokens** → `src/index.css`. v3 uses a flat print-inspired palette — see the `/* === EDITORIAL TOKENS === */` block. No gradients, no shadows; section separators use `border-t border-line`. CSS helpers: `.serif`, `.smallcaps`, `.num`, `.cta`, `.wash`, `.dot`/`.dot.on`, `.hr`/`.vr`.
 3. **Layout or behavior** → section components under `src/components/<family>/`; compose or reorder them in the matching page under `src/pages/`.
 
 Section component families:
 
-- `src/components/checkout/` — `CheckoutHeader`, `CheckoutTimer`, `CustomerInfoCard`, `ShippingInfoCard`, `PaymentInfoCard`, `OrderSummaryCard`, `CheckoutFooter`, `PaymentStatusDialog`, plus `primitives/` (`SectionCard`, `PriceRow`, `SecureBadge`, `GuaranteeBadge`).
+- `src/components/checkout/` — `ProductHeroCard`, `BundleSelector` (+ `bundles.ts`), `GuaranteeCard`, `Seal`, `ReviewsSection`, `IngredientsPanel`, `CustomerInfo`, `ShippingInfo`, `PaymentInfo`, `OrderSummaryCard`, `SecurityBadges`, `PaymentStatusDialog`, `form-atoms` (`SectionHead`, `Field`), plus `primitives/` (`SectionCard`, `PriceRow`).
 - `src/components/product/` — `ProductHeader`, `ProductHero`, `ProductCopySection`.
 - `src/components/thank-you/` — `ThankYouHeader`, `OrderConfirmationCard`, `NextStepsCard`, `UpsellOfferBanner`, `UpsellCheckoutModal`.
 - `src/components/orders/` — admin orders table, row, drawer, pagination, status pill.
@@ -203,6 +211,42 @@ Section component families:
 - `src/components/dashboard/` / `src/components/settings/` / `src/components/login/` / `src/components/site/` — chrome and layout pieces for the non-storefront surfaces.
 
 Each section component starts with a JSDoc header listing its `data-*` markers and where to edit its copy.
+
+## Editorial design system
+
+v3 uses a flat, print-inspired visual language. Refer to this section before making any UI changes.
+
+**Color tokens** (defined in `src/index.css` `@theme inline` block):
+
+| Token | Value | Use |
+|---|---|---|
+| `--color-ivory` / `--color-bone` | `#f4f1e8` | Page background |
+| `--color-line` | `#dcd8c8` | All borders (`border-line`) |
+| `--color-ink` | `#0d0d0c` | Primary text |
+| `--color-ink2` | `#2a2826` | Secondary text |
+| `--color-ink3` | `#6b6760` | Captions, hints, muted labels |
+| `--color-ink4` | `#b0ab9f` | Placeholders, decorative dashes |
+| `--color-umber` | `#8c4a1c` | Savings, timers, charge-pending |
+| `--color-forest` | `#1b3326` | Success states |
+
+**CSS helpers** (plain class names, no Tailwind prefix):
+
+| Class | Effect |
+|---|---|
+| `.serif` | Cormorant Garamond, normal weight |
+| `.smallcaps` | Geist sans, uppercase, letter-spaced |
+| `.num` | Tabular lining numerals |
+| `.cta` | Flat ink pay button (hover → umber) |
+| `.wash` | `background: var(--color-ivory)` |
+| `.dot` / `.dot.on` | Radio circle indicator (off/on) |
+| `.hr` / `.vr` | Hairline horizontal / vertical rule |
+
+**Rules — never break these:**
+- No gradients, no box shadows, no `rounded-md` on product images.
+- Section boundaries: `border border-line` (not card elevation).
+- Section dividers: `border-t border-line`.
+- The ConvesioPay payment iframe (`PaymentInfo.tsx`) **must never be touched** — it's a live PCI-compliant widget.
+- Subscription toggle in `BundleSelector` is visual-only — `onChange(b)` always passes the unmodified bundle so the charge never changes.
 
 ## Semantic markers (preserve when editing)
 
@@ -224,7 +268,7 @@ Source regions are wrapped in `// #region SECTION: <Name>` / `// #endregion` com
 ## Conventions
 
 - `cn()` from `src/lib/utils.ts` is the standard class-merging utility (clsx + tailwind-merge).
-- shadcn UI primitives live in `src/components/ui/`. Checkout-specific primitives (`SectionCard`, `PriceRow`, `SecureBadge`, `GuaranteeBadge`) live in `src/components/checkout/primitives/`.
+- shadcn UI primitives live in `src/components/ui/`. Checkout-specific primitives (`SectionCard`, `PriceRow`) live in `src/components/checkout/primitives/`.
 - The ConvesioPay SDK instance is a module-level singleton in `src/lib/convesiopay.ts` — do not instantiate it elsewhere.
 - `SUCCESS_STATUSES` (`"Succeeded"`, `"Authorized"`) and `PENDING_STATUSES` (`"Pending"`) are intentionally duplicated between `src/hooks/useCheckoutPayment.ts`, `src/hooks/useThankYouPayment.ts`, and `worker/index.ts` — the worker and SPA compile as separate bundles, so keep all three in sync when changing them. The worker side also has the `CPAY_STATUS_*` constants in `worker/handlers/payments/payment-status.ts` for the persisted lifecycle (`pending` / `scheduled` / `success` / `failed`).
 - D1 access goes through Drizzle via `db(env)` from `worker/db/client.ts`. Do not hand-write SQL or open D1 directly from handlers.
