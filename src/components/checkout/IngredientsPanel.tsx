@@ -29,7 +29,7 @@ const INGREDIENTS: { name: string; benefit: string }[] = [
 
 export function IngredientsPanel() {
   return (
-    <div data-section="ingredients" className="border-t border-line py-10">
+    <section data-section="ingredients" aria-label="Ingredients" className="border-t border-line py-10">
       <div className="flex items-baseline justify-between">
         <span className="smallcaps text-[10.5px] text-ink3">Formula</span>
         <span className="smallcaps text-[10.5px] text-ink3">32 organic inputs</span>
@@ -47,6 +47,6 @@ export function IngredientsPanel() {
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }

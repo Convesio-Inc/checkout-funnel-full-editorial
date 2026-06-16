@@ -31,14 +31,16 @@ const TESTIMONIALS = [
 
 export function ReviewsSection() {
   return (
-    <div data-section="reviews" className="border-t border-line pt-10 pb-4">
+    <section data-section="reviews" aria-label="Customer reviews" className="border-t border-line pt-10 pb-4">
       <div className="smallcaps text-[10.5px] text-ink3">Verified Purchasers</div>
       <div className="serif italic text-[38px] text-ink mt-2 leading-none">What they said.</div>
 
       <div className="mt-8 grid md:grid-cols-3 gap-8 border-t border-line pt-8">
         {TESTIMONIALS.map((t) => (
           <div key={t.attribution}>
-            <div className="text-umber text-[11px] tracking-[0.2em]">{t.stars}</div>
+            <div className="text-umber text-[11px] tracking-[0.2em]" aria-label="5 out of 5 stars">
+              <span aria-hidden="true">{t.stars}</span>
+            </div>
             <p className="text-[13.5px] text-ink2 leading-[1.65] mt-3 font-light italic">
               {t.quote}
             </p>
@@ -46,6 +48,6 @@ export function ReviewsSection() {
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
