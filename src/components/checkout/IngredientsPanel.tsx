@@ -1,49 +1,52 @@
 /**
  * IngredientsPanel
  * -----------------------------------------------------------------------------
- * Editorial ingredients list — 4-column grid, flat borders, serif headline.
- * No gloss, no colour fills.
+ * Four grouped ingredient columns matching the reference Ingredients() component.
+ * Each column has a serif italic group heading and a dash-prefixed ingredient list.
  *
  * Marker: data-section="ingredients"
  * -----------------------------------------------------------------------------
  */
 
-const INGREDIENTS: { name: string; benefit: string }[] = [
-  { name: "Spirulina",     benefit: "Cellular energy" },
-  { name: "Chlorella",     benefit: "Detox support" },
-  { name: "Wheatgrass",    benefit: "Alkalising" },
-  { name: "Barley grass",  benefit: "Antioxidant" },
-  { name: "Matcha",        benefit: "Mental focus" },
-  { name: "Ashwagandha",   benefit: "Stress buffer" },
-  { name: "Rhodiola",      benefit: "Endurance" },
-  { name: "Lion's mane",   benefit: "Cognition" },
-  { name: "Reishi",        benefit: "Immune tone" },
-  { name: "Chaga",         benefit: "Inflammation" },
-  { name: "Ginger root",   benefit: "Digestion" },
-  { name: "Fennel seed",   benefit: "Bloat relief" },
-  { name: "Peppermint",    benefit: "Gut motility" },
-  { name: "Black pepper",  benefit: "Bioavailability" },
-  { name: "Turmeric",      benefit: "Anti-inflammatory" },
-  { name: "Vitamin C",     benefit: "Immunity" },
+const GROUPS: { head: string; list: string[] }[] = [
+  {
+    head: "Adaptogens",
+    list: ["Ashwagandha KSM-66", "Reishi", "Rhodiola", "L-Theanine"],
+  },
+  {
+    head: "Greens",
+    list: ["Spirulina", "Chlorella", "Spinach", "Kale", "Matcha"],
+  },
+  {
+    head: "Roots & spice",
+    list: ["Beetroot", "Turmeric", "Ginger", "Maca"],
+  },
+  {
+    head: "Digestion",
+    list: ["Probiotic blend", "Inulin", "Bromelain", "Papain"],
+  },
 ];
 
 export function IngredientsPanel() {
   return (
-    <section data-section="ingredients" aria-label="Ingredients" className="border-t border-line py-10">
-      <div className="flex items-baseline justify-between">
-        <span className="smallcaps text-[10.5px] text-ink3">Formula</span>
-        <span className="smallcaps text-[10.5px] text-ink3">32 organic inputs</span>
+    <section data-section="ingredients" aria-label="Ingredients" className="border-t border-line py-12">
+      <div className="flex items-baseline justify-between mb-8">
+        <h3 className="serif text-[28px] leading-none">Inside the formula.</h3>
+        <div className="smallcaps text-[10.5px] text-ink3">32 organic ingredients · USDA</div>
       </div>
-      <div className="serif italic text-[38px] text-ink mt-2 leading-none">What's inside.</div>
 
-      <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-0 border-t border-line pt-6">
-        {INGREDIENTS.map((item) => (
-          <div
-            key={item.name}
-            className="py-2.5 border-b border-line flex items-baseline justify-between text-[12.5px]"
-          >
-            <span className="text-ink2 font-light">{item.name}</span>
-            <span className="text-ink3 text-[11px]">{item.benefit}</span>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-10 gap-y-6">
+        {GROUPS.map((col) => (
+          <div key={col.head}>
+            <div className="serif italic text-[18px] text-ink mb-2">{col.head}</div>
+            <ul className="space-y-1.5">
+              {col.list.map((item) => (
+                <li key={item} className="text-[12.5px] text-ink2 font-light flex items-baseline gap-2">
+                  <span className="text-ink4">—</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         ))}
       </div>

@@ -1,8 +1,8 @@
 /**
  * ReviewsSection
  * -----------------------------------------------------------------------------
- * Three inline testimonials in a horizontal row; stacks on mobile.
- * Editorial: flat borders, serif headline, no gloss.
+ * Three editorial pull-quotes in a horizontal row; stacks on mobile.
+ * Matches the reference Testimonials() component exactly.
  *
  * Marker: data-section="reviews"
  * -----------------------------------------------------------------------------
@@ -10,42 +10,46 @@
 
 const TESTIMONIALS = [
   {
-    stars: "★★★★★",
-    quote:
-      "I have tried every green powder on the market. This is the first one I actually look forward to. No grit, no grass. Just clarity.",
-    attribution: "— ELEANOR V., PORTLAND",
+    quote: "Sharper by the second week — and I never remember vitamins.",
+    name: "Priya R.",
+    location: "Austin, Texas",
   },
   {
-    stars: "★★★★★",
-    quote:
-      "Two months in. My digestion is better, my energy is steadier, and I no longer need a second coffee at noon. Real results.",
-    attribution: "— MARCUS T., BROOKLYN",
+    quote: "The first greens powder that does not taste like pond water.",
+    name: "Daniel K.",
+    location: "Brooklyn, New York",
   },
   {
-    stars: "★★★★★",
-    quote:
-      "The bottle alone makes me feel like I'm taking care of myself. The formula backs it up. I will not run out again.",
-    attribution: "— SARAH K., SAN FRANCISCO",
+    quote: "Refunded me without making it weird. I re-ordered a month later.",
+    name: "Lena S.",
+    location: "Denver, Colorado",
   },
 ];
 
 export function ReviewsSection() {
   return (
-    <section data-section="reviews" aria-label="Customer reviews" className="border-t border-line pt-10 pb-4">
-      <div className="smallcaps text-[10.5px] text-ink3">Verified Purchasers</div>
-      <div className="serif italic text-[38px] text-ink mt-2 leading-none">What they said.</div>
+    <section data-section="reviews" aria-label="Customer reviews" className="border-t border-line py-12">
+      <div className="flex items-baseline justify-between mb-8">
+        <div>
+          <div className="smallcaps text-[10.5px] text-ink3">From the cabinet</div>
+          <h3 className="serif text-[28px] leading-none mt-1">Notes from our readers.</h3>
+        </div>
+        <div className="text-right">
+          <div className="num text-[20px]">4.86</div>
+          <div className="smallcaps text-[10px] text-ink3 mt-1">12,408 verified · five stars</div>
+        </div>
+      </div>
 
-      <div className="mt-8 grid md:grid-cols-3 gap-8 border-t border-line pt-8">
+      <div className="grid md:grid-cols-3 gap-12">
         {TESTIMONIALS.map((t) => (
-          <div key={t.attribution}>
-            <div className="text-umber text-[11px] tracking-[0.2em]" aria-label="5 out of 5 stars">
-              <span aria-hidden="true">{t.stars}</span>
-            </div>
-            <p className="text-[13.5px] text-ink2 leading-[1.65] mt-3 font-light italic">
-              {t.quote}
-            </p>
-            <div className="mt-3 smallcaps text-[10px] text-ink3">{t.attribution}</div>
-          </div>
+          <figure key={t.name}>
+            <blockquote className="serif italic text-[22px] leading-[1.25] text-ink">
+              &ldquo;{t.quote}&rdquo;
+            </blockquote>
+            <figcaption className="mt-4 smallcaps text-[10.5px] text-ink3">
+              <span className="text-ink2">{t.name}</span> &nbsp;—&nbsp; {t.location}
+            </figcaption>
+          </figure>
         ))}
       </div>
     </section>

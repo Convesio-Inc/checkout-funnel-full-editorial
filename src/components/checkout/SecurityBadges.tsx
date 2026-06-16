@@ -1,43 +1,32 @@
 /**
  * SecurityBadges
  * -----------------------------------------------------------------------------
- * Quiet trust strip — six inline badges, flat hairline border, no gloss.
+ * Four-column text-only trust grid matching the reference Trust() component.
+ * No icons — each badge has a smallcaps key and a light text-ink2 value.
  *
  * Marker: data-section="trust-badges"
  * -----------------------------------------------------------------------------
  */
 
-import { Icon } from "@/components/icons";
-
-const ICON_MAP: Record<string, React.ComponentType<{ className?: string; "aria-hidden"?: boolean | "true" }>> = {
-  lock: Icon.Lock,
-  check: Icon.Check,
-};
-
-const BADGES: { icon: "lock" | "check"; label: string }[] = [
-  { icon: "lock",  label: "256-bit encrypted checkout" },
-  { icon: "check", label: "30-day empty-bottle return" },
-  { icon: "check", label: "Complimentary shipping" },
-  { icon: "lock",  label: "Secure payment via ConvesioPay" },
-  { icon: "check", label: "No subscription — ever" },
-  { icon: "check", label: "Certified organic inputs" },
+const BADGES: { k: string; v: string }[] = [
+  { k: "SSL / TLS 1.3",     v: "256-bit · encrypted" },
+  { k: "PCI DSS",           v: "Level 1 compliant" },
+  { k: "Verified Merchant", v: "Since 2019" },
+  { k: "Privacy Guard",     v: "No data resale" },
 ];
 
 export function SecurityBadges() {
   return (
     <div
       data-section="trust-badges"
-      className="border-t border-line py-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-3"
+      className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-3 pt-6 border-t border-line"
     >
-      {BADGES.map((b) => {
-        const IconComp = ICON_MAP[b.icon];
-        return (
-          <span key={b.label} className="inline-flex items-center gap-2 smallcaps text-[10px] text-ink3">
-            <IconComp className="w-3 h-3" aria-hidden="true" />
-            {b.label}
-          </span>
-        );
-      })}
+      {BADGES.map((b) => (
+        <div key={b.k} className="leading-tight">
+          <div className="smallcaps text-[10px] text-ink3">{b.k}</div>
+          <div className="text-[12px] text-ink2 mt-1 font-light">{b.v}</div>
+        </div>
+      ))}
     </div>
   );
 }

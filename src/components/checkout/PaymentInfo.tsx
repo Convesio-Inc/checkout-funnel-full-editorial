@@ -70,11 +70,9 @@ export function PaymentInfo({
         </p>
       )}
 
-      <div className="mt-3 flex items-center justify-between text-[11px] text-ink3">
-        <div className="inline-flex items-center gap-1.5">
-          <Icon.Lock className="w-3.5 h-3.5" aria-hidden="true" /> Tokenized via TLS 1.3 — your card never touches our servers.
-        </div>
-        <span className="num text-[10.5px] text-ink3 tracking-[0.08em]">VISA · MC · AMEX · DISC</span>
+      <div className="mt-4 text-[11px] text-ink3 flex items-center gap-2 font-light">
+        <Icon.Lock className="w-3.5 h-3.5" aria-hidden="true" />
+        Tokenized via TLS 1.3 — your card never touches our servers.
       </div>
     </div>
   );

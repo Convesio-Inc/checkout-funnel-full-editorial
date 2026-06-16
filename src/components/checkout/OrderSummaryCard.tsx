@@ -115,9 +115,9 @@ export function OrderSummaryCard({
         </span>
       </button>
 
-      <p className="text-center text-[11px] text-ink3 tracking-wide">
-        Secure 256-bit SSL · Not charged until you click above
-      </p>
+      <div className="text-center text-[11px] text-ink3 -mt-3 font-light">
+        You will not be charged until you press the button above.
+      </div>
 
       <SecurityBadges />
     </div>
