@@ -124,7 +124,7 @@
 
 /* underline inputs — flat, hairline */
 input[type="text"], input[type="email"], input[type="tel"], select {
-  font-family: "Geist", ui-sans-serif, system-ui, sans-serif;
+  font-family: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   background: transparent;
   border: 0;
   border-bottom: 1px solid #c9c4b1;
