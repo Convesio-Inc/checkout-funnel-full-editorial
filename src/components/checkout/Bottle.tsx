@@ -1,10 +1,9 @@
 /**
  * Bottle
  * -----------------------------------------------------------------------------
- * SVG-drawn supplement bottle used in the product hero (large) and the bundle
- * cards (small). `ghost` renders the faded "free bonus" silhouette. Gradient
- * IDs are made unique per instance with useId so multiple bottles can render
- * on one page without clashing defs.
+ * SVG-drawn apothecary bottle used in the product hero (large, w=240 h=460)
+ * and bundle row thumbnails (small, w=20 h=42). `ghost` renders a faded
+ * cream-stroke silhouette for the "bonus bottles" position.
  * -----------------------------------------------------------------------------
  */
 
