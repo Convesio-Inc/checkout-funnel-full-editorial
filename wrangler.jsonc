@@ -69,7 +69,7 @@
 		{
 			"binding": "DB",
 			"database_name": "fulfillment-checkout-v3",
-			"database_id": "REPLACE_AFTER_D1_CREATE",
+			"database_id": "a4ea6c23-a6a6-4911-b03b-8054fccd5f39",
 			"migrations_dir": "worker/db/migrations"
 		}
 	],
