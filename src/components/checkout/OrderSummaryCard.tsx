@@ -56,25 +56,36 @@ export function OrderSummaryCard({
   return (
     <div data-section="order-summary" className="space-y-6">
       {/* Line items + total */}
-      <div className="rule pt-4">
-        <div className="flex items-center justify-between text-[13px]">
-          <span className="text-ink2">
+      <dl className="space-y-2 text-[13px]">
+        <div className="flex items-baseline justify-between">
+          <dt className="text-ink2">
             {lineLabel} <span className="text-ink3">(one-time)</span>
-          </span>
-          <span className="num text-ink">{totalFormatted}</span>
+          </dt>
+          <dd className="num text-ink">{totalFormatted}</dd>
         </div>
-        <div className="flex items-center justify-between text-[13px] mt-1">
-          <span className="text-ink2">Shipping</span>
-          <span className="num text-forest font-medium">FREE</span>
+
+        <div className="flex items-baseline justify-between">
+          <dt className="text-ink2">Shipping</dt>
+          <dd className="num text-ink3">Complimentary</dd>
         </div>
-        <div className="flex items-baseline justify-between mt-2 pt-2 border-t border-line">
-          <span className="text-[12px] uppercase tracking-[0.14em] text-ink3">Total today</span>
-          <div className="text-right">
-            <div className="num text-[22px] font-semibold leading-none text-ink">{totalFormatted}</div>
-            <div className="text-[11px] text-ink3 mt-0.5">USD · billed once</div>
+
+        {(selectedBundle.savingsMinor ?? 0) > 0 && (
+          <div className="flex items-baseline justify-between">
+            <dt className="text-ink2">You save</dt>
+            <dd className="num text-umber">
+              −{formatDollars(selectedBundle.savingsMinor ?? 0)}
+            </dd>
           </div>
+        )}
+
+        <div className="flex items-baseline justify-between pt-3 border-t border-line">
+          <dt className="smallcaps text-[10px] text-ink3">Total today</dt>
+          <dd className="text-right">
+            <div className="num text-[22px] leading-none text-ink">{totalFormatted}</div>
+            <div className="num text-[11px] text-ink3 mt-0.5">USD</div>
+          </dd>
         </div>
-      </div>
+      </dl>
 
       {/* Pay CTA */}
       <button
@@ -83,7 +94,7 @@ export function OrderSummaryCard({
         type="submit"
         disabled={disabled}
         aria-disabled={disabled}
-        className="order-cta gloss-cta w-full text-white rounded-md py-5 font-bold tracking-[0.08em] uppercase text-[18px] flex items-center justify-center gap-3 relative cursor-pointer"
+        className="order-cta cta w-full py-5 px-6 flex items-center justify-center gap-4 text-[14px] tracking-[0.32em] uppercase relative cursor-pointer"
       >
         <span className="cta-main flex items-center justify-center gap-3 relative z-10">
           <Icon.Lock className="w-5 h-5" />
@@ -104,10 +115,9 @@ export function OrderSummaryCard({
         </span>
       </button>
 
-      <div className="text-center text-[11.5px] text-ink3 -mt-2 flex items-center justify-center gap-1.5">
-        <Icon.Lock className="w-3.5 h-3.5" /> Secure 256-bit SSL encryption · You won't be charged
-        until you click above
-      </div>
+      <p className="text-center text-[11px] text-ink3 tracking-wide">
+        Secure 256-bit SSL · Not charged until you click above
+      </p>
 
       <SecurityBadges />
     </div>
