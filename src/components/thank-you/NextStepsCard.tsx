@@ -51,7 +51,7 @@ export function NextStepsCard({ title, steps }: NextStepsCardProps) {
               <div
                 data-slot="step-icon"
                 aria-hidden="true"
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand"
+                className="flex h-9 w-9 shrink-0 items-center justify-center text-ink3"
               >
                 {Icon && <Icon className="h-4 w-4" />}
               </div>

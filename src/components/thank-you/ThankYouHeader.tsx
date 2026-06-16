@@ -23,9 +23,6 @@
  * -----------------------------------------------------------------------------
  */
 
-import { CheckCircle2Icon } from "lucide-react";
-
-import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 
 interface BrandConfig {
@@ -76,54 +73,49 @@ export function ThankYouHeader({
 
   return (
     <>
-      <Card data-section="thank-you-brand-header">
-        <CardContent className="flex items-center justify-between">
-          <img
-            data-slot="brand-icon"
-            src={brand.icon.src}
-            alt={brand.icon.alt}
-            className="h-9 w-9 shrink-0 rounded-lg border border-brand/40 object-cover"
-          />
-          <span
-            data-slot="brand-name"
-            className="text-xs font-semibold uppercase tracking-[0.14em] text-brand"
-          >
-            {brand.name}
-          </span>
-        </CardContent>
-      </Card>
+      <div data-section="thank-you-brand-header" className="flex items-center justify-between py-4 border-b border-line">
+        <img
+          data-slot="brand-icon"
+          src={brand.icon.src}
+          alt={brand.icon.alt}
+          className="h-8 w-8 shrink-0 border border-line object-cover"
+        />
+        <span
+          data-slot="brand-name"
+          className="smallcaps text-[10px] text-ink3"
+        >
+          {brand.name}
+        </span>
+      </div>
 
-      <Card data-section="thank-you-header" data-status={status}>
-        <CardContent className="flex flex-col items-center gap-3 pb-2 text-center">
-          <div
-            data-slot="confirmation-icon"
-            aria-hidden="true"
-            className={
-              isSucceeded
-                ? "flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/10"
-                : "flex h-14 w-14 items-center justify-center rounded-full bg-muted"
-            }
-          >
-            {isSucceeded ? (
-              <CheckCircle2Icon className="h-8 w-8 text-emerald-500" />
-            ) : (
-              <Spinner className="h-7 w-7 text-muted-foreground" />
-            )}
-          </div>
-          <h1
-            data-slot="confirmation-heading"
-            className="text-2xl font-bold tracking-tight text-foreground"
-          >
-            {resolvedHeading}
-          </h1>
-          <p
-            data-slot="confirmation-subheading"
-            className="text-sm text-muted-foreground"
-          >
-            {resolvedSubheading}
-          </p>
-        </CardContent>
-      </Card>
+      <div data-section="thank-you-header" data-status={status} className="py-10 text-center border-b border-line">
+        <div
+          data-slot="confirmation-icon"
+          aria-hidden="true"
+          className="mx-auto mb-4 flex h-12 w-12 items-center justify-center"
+        >
+          {isSucceeded ? (
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <circle cx="24" cy="24" r="23" stroke="#1b3326" strokeWidth="0.8"/>
+              <path d="M14 24l7 7 13-13" stroke="#1b3326" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+          ) : (
+            <Spinner className="h-7 w-7 text-ink3" />
+          )}
+        </div>
+        <h1
+          data-slot="confirmation-heading"
+          className="serif text-[38px] leading-none text-ink"
+        >
+          {resolvedHeading}
+        </h1>
+        <p
+          data-slot="confirmation-subheading"
+          className="mt-3 text-[13.5px] text-ink2 max-w-[52ch] mx-auto"
+        >
+          {resolvedSubheading}
+        </p>
+      </div>
     </>
   );
 }

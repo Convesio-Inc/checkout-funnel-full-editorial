@@ -42,7 +42,7 @@ export interface UpsellCheckoutModalProps {
 type UpsellStatus = "idle" | "processing" | "queued" | "failed";
 
 const ctaClassName =
-    "order-cta gloss-cta h-12 w-full rounded-md text-base font-bold tracking-[0.04em] text-white uppercase cursor-pointer";
+    "order-cta cta h-12 w-full text-[13px] tracking-[0.28em] uppercase cursor-pointer";
 
 export function UpsellCheckoutModal({
     upsell,
@@ -165,7 +165,7 @@ export function UpsellCheckoutModal({
                 {/* Product summary */}
                 <div
                     data-slot="upsell-product-summary"
-                    className="flex items-center gap-3 rounded-md border border-line bg-bone2/40 p-3"
+                    className="flex items-center gap-3 border border-line p-3"
                 >
                     <img
                         src={upsell.image.src}
@@ -183,7 +183,7 @@ export function UpsellCheckoutModal({
                             <span className="num text-sm text-ink3 line-through">
                                 {upsell.regularPrice}
                             </span>
-                            <span className="rounded-full bg-amber px-2 py-0.5 text-xs font-bold text-white">
+                            <span className="smallcaps border border-umber/40 text-umber text-[10px] px-1.5 py-0.5">
                                 {upsell.discountLabel}
                             </span>
                         </div>

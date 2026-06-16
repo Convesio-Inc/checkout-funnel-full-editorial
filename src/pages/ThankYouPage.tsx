@@ -167,8 +167,7 @@ export function ThankYouPage() {
     ? formatMoney(itemsSubtotalMinor, receiptCurrency)
     : summary.total.value;
 
-  const ctaClassName =
-    "h-12 w-full rounded-md bg-forest text-bone text-[14px] font-semibold tracking-[0.04em] uppercase flex items-center justify-center gap-2 transition hover:bg-forest2 cursor-pointer";
+  const ctaClassName = "cta w-full h-12 flex items-center justify-center gap-2 text-[13px] tracking-[0.28em] uppercase cursor-pointer";
 
   return (
     <main data-page="thank-you">
@@ -188,7 +187,7 @@ export function ThankYouPage() {
               </p>
               <a
                 href="/"
-                className="inline-flex h-11 items-center justify-center rounded-md bg-forest px-6 text-[14px] font-semibold uppercase tracking-[0.04em] text-bone transition hover:bg-forest2"
+                className="cta inline-flex h-11 items-center justify-center px-6 text-[13px] tracking-[0.28em] uppercase cursor-pointer"
               >
                 Return to checkout
               </a>
@@ -202,7 +201,7 @@ export function ThankYouPage() {
                 data-status={state}
                 aria-label="Payment processing message"
                 aria-live="polite"
-                className="flex items-start gap-3 rounded-md border border-[#e4d4a5] bg-amber-soft/50 px-5 py-4"
+                className="flex items-start gap-3 border border-line bg-bone2 px-5 py-4"
               >
                 <Spinner aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-amber2" />
                 <div data-slot="promo-copy" className="space-y-1">
@@ -218,9 +217,9 @@ export function ThankYouPage() {
                 data-section="promo-banner"
                 data-status="succeeded"
                 aria-label="Order confirmation message"
-                className="flex items-start gap-3 rounded-md border border-[#cfe0d2] bg-[#f4faf4] px-5 py-4"
+                className="flex items-start gap-3 border border-line bg-paper px-5 py-4"
               >
-                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-forest text-bone">
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-forest">
                   <Icon.Check className="h-3 w-3" />
                 </span>
                 <div data-slot="promo-copy" className="space-y-1">
@@ -315,7 +314,7 @@ export function ThankYouPage() {
                 <SectionCard section="receipt-summary" title={thankYou.receipt.title}>
                   <div
                     data-slot="included-products-list"
-                    className="rounded-md border border-line bg-bone2/50 p-2.5"
+                    className="border border-line bg-bone2 p-2.5"
                   >
                     {hasOrderItems ? (
                       orderItems.map((item) => {
@@ -336,7 +335,7 @@ export function ThankYouPage() {
                               data-slot="included-product-thumb"
                               src={image.src}
                               alt={image.alt}
-                              className="h-12 w-12 shrink-0 rounded-md border border-line object-cover"
+                              className="h-12 w-12 shrink-0 border border-line object-cover"
                             />
                             <span className="flex min-w-0 flex-1 flex-col gap-0.5 text-ink">
                               <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -344,7 +343,7 @@ export function ThankYouPage() {
                                 {item.chargePending ? (
                                   <span
                                     data-slot="charge-pending-badge"
-                                    className="rounded-[3px] border border-amber/40 bg-amber-soft px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber2"
+                                    className="smallcaps border border-umber/40 px-1.5 py-0.5 text-[10px] text-umber"
                                   >
                                     Charge pending
                                   </span>
@@ -459,7 +458,7 @@ export function ThankYouPage() {
 
                     <div
                       data-slot="guarantee-note"
-                      className="rounded-md border border-[#b9e0be] bg-[#eff9f0] p-3 text-[12.5px] font-semibold text-forest"
+                      className="border border-line p-3 text-[12.5px] text-ink2"
                     >
                       {thankYou.receipt.guaranteeNote}
                     </div>

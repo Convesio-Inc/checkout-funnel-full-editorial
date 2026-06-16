@@ -36,7 +36,7 @@ export interface UpsellOfferBannerProps {
 }
 
 const ctaClassName =
-  "order-cta gloss-cta h-12 rounded-md px-5 text-[14px] font-bold tracking-[0.04em] text-white uppercase cursor-pointer";
+  "order-cta cta h-12 px-5 text-[13px] tracking-[0.28em] uppercase cursor-pointer";
 
 function pad(n: number): string {
   return String(n).padStart(2, "0");
@@ -61,7 +61,7 @@ export function UpsellOfferBanner({ upsell, onClaim }: UpsellOfferBannerProps) {
   return (
     <section
       data-section="upsell-offer"
-      className="overflow-hidden rounded-md gloss-card"
+      className="overflow-hidden border border-line"
     >
       <div className="flex items-center justify-between border-b border-line2 px-4 py-3">
         <h2 className="text-[15px] font-bold text-ink">Wait! Limited time offer</h2>
@@ -69,7 +69,7 @@ export function UpsellOfferBanner({ upsell, onClaim }: UpsellOfferBannerProps) {
           data-slot="upsell-timer"
           aria-live="polite"
           aria-label={`Offer expires in ${mmss}`}
-          className="num text-[15px] font-bold tabular-nums text-rust"
+          className="num text-[15px] font-bold tabular-nums text-umber"
         >
           {mmss}
         </span>
@@ -86,7 +86,7 @@ export function UpsellOfferBanner({ upsell, onClaim }: UpsellOfferBannerProps) {
           <div className="mt-1 flex flex-wrap items-center gap-2">
             <span className="num text-[14px] font-bold text-ink">{upsell.salePrice}</span>
             <span className="num text-[13px] text-ink3 line-through">{upsell.regularPrice}</span>
-            <span className="inline-flex items-center gap-1 rounded-full bg-amber px-2 py-0.5 text-[11px] font-bold text-white">
+            <span className="smallcaps border border-umber/40 text-umber text-[10px] px-1.5 py-0.5 inline-flex items-center gap-1">
               <Icon.Tag className="h-3 w-3" aria-hidden="true" />
               {upsell.discountLabel}
             </span>

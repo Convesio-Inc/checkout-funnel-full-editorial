@@ -16,7 +16,6 @@
 
 import { PriceRow, type PriceLine } from "@/components/checkout/primitives/PriceRow";
 import { SectionCard } from "@/components/checkout/primitives/SectionCard";
-import { Separator } from "@/components/ui/separator";
 
 interface ProductConfig {
   name: string;
@@ -61,12 +60,12 @@ export function OrderConfirmationCard({
         />
       </div>
 
-      <Separator />
+      <div className="border-t border-line" />
 
       <PriceRow line={summary.shipping} />
       <PriceRow line={summary.tax} />
 
-      <Separator />
+      <div className="border-t border-line" />
 
       <PriceRow
         line={summary.total}

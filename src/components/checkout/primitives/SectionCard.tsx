@@ -33,7 +33,7 @@ export function SectionCard({
     <section
       data-section={section}
       data-slot="section-card"
-      className={cn("gloss-card rounded-md overflow-hidden", className)}
+      className={cn("border border-line overflow-hidden", className)}
       {...rest}
     >
       {title ? (
