@@ -92,12 +92,12 @@ export function ThankYouHeader({
         <div
           data-slot="confirmation-icon"
           aria-hidden="true"
-          className="mx-auto mb-4 flex h-12 w-12 items-center justify-center"
+          className="mx-auto mb-4 flex h-12 w-12 items-center justify-center text-forest"
         >
           {isSucceeded ? (
             <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-              <circle cx="24" cy="24" r="23" stroke="#1b3326" strokeWidth="0.8"/>
-              <path d="M14 24l7 7 13-13" stroke="#1b3326" strokeWidth="1.5" strokeLinecap="round"/>
+              <circle cx="24" cy="24" r="23" stroke="currentColor" strokeWidth="0.8"/>
+              <path d="M14 24l7 7 13-13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
           ) : (
             <Spinner className="h-7 w-7 text-ink3" />

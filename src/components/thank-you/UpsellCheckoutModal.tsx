@@ -170,7 +170,7 @@ export function UpsellCheckoutModal({
                     <img
                         src={upsell.image.src}
                         alt={upsell.image.alt}
-                        className="h-14 w-14 shrink-0 rounded-md border border-line object-cover"
+                        className="h-14 w-14 shrink-0 border border-line object-cover"
                     />
                     <div className="min-w-0 flex-1">
                         <p className="text-sm font-semibold text-ink">

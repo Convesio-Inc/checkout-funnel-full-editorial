@@ -365,7 +365,7 @@ export function ThankYouPage() {
                           data-slot="included-product-thumb"
                           src={product.image.src}
                           alt={product.image.alt}
-                          className="h-12 w-12 shrink-0 rounded-md border border-line object-cover"
+                          className="h-12 w-12 shrink-0 border border-line object-cover"
                         />
                         <span className="flex-1 text-ink">{includedLabel}</span>
                         <strong data-slot="included-product-price" className="num text-ink">
