@@ -1,29 +1,31 @@
 /**
  * SiteFooter
  * -----------------------------------------------------------------------------
- * Quiet storefront footer: copyright, policy links, secure-checkout assurance.
- * Paper background with a hairline top border to match the Meridian chrome.
+ * Quiet storefront footer: brand address, policy links, secure-checkout
+ * assurance. Three-column editorial grid on md+, stacked on mobile.
  * -----------------------------------------------------------------------------
  */
 
 import { Icon } from "@/components/icons";
 
-const POLICY_LINKS = ["Privacy", "Terms", "Refunds", "Contact"];
-
 export function SiteFooter() {
   return (
-    <footer className="border-t border-line bg-paper/60 backdrop-blur mt-12">
-      <div className="max-w-[1180px] mx-auto px-5 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11.5px] text-ink3">
-        <div>© 2026 Meridian Botanicals — Portland, OR</div>
-        <nav className="flex items-center gap-5">
-          {POLICY_LINKS.map((label) => (
-            <a key={label} href="#" className="hover:text-ink transition-colors">
-              {label}
-            </a>
-          ))}
-        </nav>
-        <div className="inline-flex items-center gap-1.5">
-          <Icon.Lock className="w-3.5 h-3.5" /> Secure checkout
+    <footer className="border-t border-line mt-16">
+      <div className="max-w-[1200px] mx-auto px-8 py-10 grid md:grid-cols-3 gap-8 items-start text-[11.5px] text-ink3 font-light">
+        <div>
+          <div className="serif text-[18px] text-ink leading-none">Meridian Botanicals</div>
+          <div className="mt-2">126 SE Stark Street · Portland, Oregon</div>
+          <div>© 2026 — all formulas, original.</div>
+        </div>
+        <div className="flex flex-wrap gap-x-6 gap-y-1">
+          <a href="#" className="hover:text-ink">Privacy</a>
+          <a href="#" className="hover:text-ink">Terms</a>
+          <a href="#" className="hover:text-ink">Refunds</a>
+          <a href="#" className="hover:text-ink">Wholesale</a>
+          <a href="#" className="hover:text-ink">Contact</a>
+        </div>
+        <div className="md:text-right inline-flex md:justify-end items-center gap-2 smallcaps text-[10.5px]">
+          <Icon.Lock className="w-3 h-3" /> Secure checkout
         </div>
       </div>
     </footer>

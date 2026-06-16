@@ -1,10 +1,8 @@
 /**
  * UrgencyRail
  * -----------------------------------------------------------------------------
- * Sticky top rail across all storefront pages. A forest row (live viewers,
- * shipping/tested assurances, a "reserved for" countdown) sits above an amber
- * sub-bar reinforcing the free-bottle deadline. Self-contained: owns its own
- * countdown + viewer counter.
+ * Sticky top rail across all storefront pages. Shows live viewers, shipping/
+ * tested/origin assurances, and an order-reserved countdown.
  *
  * Markers:
  *   - root            data-section="urgency-rail"
@@ -12,7 +10,6 @@
  * -----------------------------------------------------------------------------
  */
 
-import { Icon } from "@/components/icons";
 import { useCountdown, useViewers } from "@/hooks/useStorefrontUrgency";
 
 export function UrgencyRail() {
@@ -22,42 +19,29 @@ export function UrgencyRail() {
   return (
     <div
       data-section="urgency-rail"
-      className="sticky top-0 z-40 gloss-forest text-bone"
+      className="sticky top-0 z-40 bg-bone border-b border-line"
     >
-      <div className="max-w-[1180px] mx-auto px-5 py-2.5 flex items-center justify-between gap-6 text-[12.5px]">
-        <div className="flex items-center gap-2.5">
-          <span className="relative inline-flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full rounded-full bg-amber3 livedot" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-amber3" />
+      <div className="max-w-[1200px] mx-auto px-8 h-10 flex items-center justify-between text-[11.5px] text-ink2">
+        <div className="flex items-center gap-3">
+          <span className="livedot inline-flex w-1.5 h-1.5 rounded-full bg-umber"></span>
+          <span>
+            <span className="num text-ink">{viewers}</span> guests reviewing this offer
           </span>
-          <span className="num tabular-nums font-medium">{viewers}</span>
-          <span className="text-bone/75">others are viewing this offer right now</span>
         </div>
-        <div className="hidden md:flex items-center gap-2 text-bone/70">
-          <Icon.Truck className="w-4 h-4" />
-          <span>Free U.S. shipping on every order</span>
-          <span className="opacity-40">·</span>
-          <Icon.Leaf className="w-4 h-4" />
-          <span>3rd-party tested</span>
+        <div className="hidden md:flex items-center gap-6 smallcaps text-[10.5px] text-ink3">
+          <span>Complimentary shipping</span>
+          <span className="text-ink4">·</span>
+          <span>Third-party tested</span>
+          <span className="text-ink4">·</span>
+          <span>Made in Oregon</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-bone/70 hidden sm:inline">Reserved for</span>
+          <span className="text-ink3 hidden sm:inline smallcaps text-[10.5px]">Order reserved</span>
           <span
             data-slot="reserved-timer"
-            className="num font-semibold tracking-[0.04em] gloss-pill px-2.5 py-1 rounded-[3px]"
+            className="num text-[12.5px] text-ink tracking-[0.04em]"
           >
-            <span>{mm}</span>
-            <span className="tick">:</span>
-            <span>{ss}</span>
-          </span>
-        </div>
-      </div>
-      <div className="bg-amber text-ink relative">
-        <div className="max-w-[1180px] mx-auto px-5 py-1.5 text-[12px] font-medium tracking-[0.01em] flex items-center justify-center gap-2 text-center">
-          <span className="uppercase tracking-[0.14em] text-[10.5px] font-semibold">Hurry —</span>
-          <span>
-            Order in the next <span className="num font-semibold">{mm}:{ss}</span> to guarantee your{" "}
-            <span className="font-semibold">2 FREE bottles</span> with the 3-bottle bundle.
+            {mm}<span className="tick text-ink3">:</span>{ss}
           </span>
         </div>
       </div>
