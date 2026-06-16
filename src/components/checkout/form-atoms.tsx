@@ -1,16 +1,17 @@
 /**
  * form-atoms
  * -----------------------------------------------------------------------------
- * Shared building blocks for the checkout form: the uppercase-labelled `Field`
- * wrapper, the numbered `SectionHead`, and the `inputCls` string used by every
- * text input / select so they share the flat gloss-input treatment.
+ * Shared building blocks for the checkout form: the smallcaps `Field` wrapper,
+ * the serif roman-numeral `SectionHead`, and the `inputCls` string used by
+ * text inputs (the global underline input style from index.css does the visual
+ * heavy lifting; inputCls carries only typography helpers).
  * -----------------------------------------------------------------------------
  */
 
 import * as React from "react";
 
 export const inputCls =
-  "w-full gloss-input rounded-md px-3 py-2.5 text-[14px] text-ink placeholder:text-ink3/70";
+  "w-full text-[15px] text-ink placeholder:text-ink4";
 
 export interface FieldProps {
   label: string;
@@ -33,14 +34,12 @@ export function Field({
 }: FieldProps) {
   return (
     <label className={"block " + span} data-field={dataField}>
-      <div className="flex items-baseline justify-between mb-1">
-        <span className="text-[11px] uppercase tracking-[0.14em] text-ink2 font-medium">
-          {label}
-        </span>
-        {optional && <span className="text-[10.5px] text-ink3">optional</span>}
-        {hint && <span className="text-[10.5px] text-ink3">{hint}</span>}
-      </div>
-      {children}
+      <span className="smallcaps text-[9.5px] text-ink3 flex items-baseline justify-between">
+        <span>{label}</span>
+        {optional && <span className="text-ink4 normal-case tracking-normal text-[10px]">optional</span>}
+        {hint && <span className="text-ink4 normal-case tracking-normal text-[10px]">{hint}</span>}
+      </span>
+      <span className="block mt-1">{children}</span>
     </label>
   );
 }
@@ -53,14 +52,12 @@ export interface SectionHeadProps {
 
 export function SectionHead({ n, title, sub }: SectionHeadProps) {
   return (
-    <div className="flex items-baseline justify-between mb-3">
-      <div className="flex items-baseline gap-2.5">
-        <span className="num text-[11px] w-5 h-5 inline-flex items-center justify-center rounded-full bg-forest text-bone">
-          {n}
-        </span>
-        <h3 className="font-semibold text-[15px] tracking-tight text-ink">{title}</h3>
+    <div className="flex items-baseline justify-between mb-5">
+      <div className="flex items-baseline gap-3">
+        <span className="serif italic text-[18px] text-ink3">{n}.</span>
+        <h3 className="serif text-[22px] leading-none">{title}.</h3>
       </div>
-      <span className="text-[11.5px] text-ink3">{sub}</span>
+      {sub && <span className="num text-[10.5px] text-ink3 tracking-[0.08em]">{sub}</span>}
     </div>
   );
 }
