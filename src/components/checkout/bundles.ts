@@ -15,7 +15,7 @@ export const BUNDLES: Bundle[] = [
   {
     id: "three-bottle",
     bottleCount: 3,
-    supplyLabel: "90-day supply + 2 free",
+    supplyLabel: "Ninety-day supply, two complimentary",
     freeBonusBottles: 2,
     pricePerBottle: 33.0,
     totalAmountMinor: 9900,
@@ -27,7 +27,7 @@ export const BUNDLES: Bundle[] = [
   {
     id: "two-bottle",
     bottleCount: 2,
-    supplyLabel: "60-day supply",
+    supplyLabel: "Sixty-day supply",
     freeBonusBottles: 0,
     pricePerBottle: 39.5,
     totalAmountMinor: 7900,
@@ -37,7 +37,7 @@ export const BUNDLES: Bundle[] = [
   {
     id: "one-bottle",
     bottleCount: 1,
-    supplyLabel: "30-day supply",
+    supplyLabel: "Thirty-day supply",
     freeBonusBottles: 0,
     pricePerBottle: 49.0,
     totalAmountMinor: 4900,
