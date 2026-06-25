@@ -1,4 +1,4 @@
-# Convesio Fulfillment Checkout V3
+# Checkout Funnel Full - Editorial
 
 A production-ready **single-page application** that renders an **integrated ConvesioPay checkout** in an editorial, print-inspired visual style, ready to deploy on [Convesio Static Sites](https://convesio.com).
 Ships as a fully designed **"MERIDIAN — Daily Greens Complex"** supplement checkout demo and serves as the v3 reference implementation.
